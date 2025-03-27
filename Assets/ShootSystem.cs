@@ -8,9 +8,21 @@ public class ShootSystem : MonoBehaviour
     public Transform shootPoint;
     public float mass = 2f;
     public float acceleration = 50f;
-    public float fireRate = 0.5f;
+    public float fireRate;
+    public float baseFireRate = 1f;
 
     private float nextFireTime = 0f;
+    public GameObject upgradePanel;
+
+    void Start()
+    {
+        ResetStats();
+    }
+
+    public void ResetStats()
+    {
+        fireRate = baseFireRate;
+    }
 
     void Update()
     {
@@ -19,7 +31,7 @@ public class ShootSystem : MonoBehaviour
 
     void ShootLightBall()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime)
+        if ( (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime) && !upgradePanel.activeSelf)
         {
             nextFireTime = Time.time + fireRate;
 

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
-    public int maxHealth = 100;
+    public int baseMaxHealth = 100;
+    public int maxHealth;
     private int currentHealth;
     public int healAmount = 20;
     public float healCD = 30;
@@ -21,10 +22,16 @@ public class HealthSystem : MonoBehaviour
 
     void Start()
     {
+        ResetStats();
         currentHealth = maxHealth;
         UpdateHealthUI();
     }
 
+    public void ResetStats()
+    {
+        maxHealth = baseMaxHealth;
+        currentHealth = maxHealth;
+    }
     private void Update()
     {
         if (isHealReady == true)

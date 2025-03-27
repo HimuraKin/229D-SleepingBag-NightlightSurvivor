@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class SpawnManager : MonoBehaviour
     public Wave[] waves;
     public int currentWave = 0;
     private List<GameObject> activeEnemies = new List<GameObject>();
+
+    public UpgradeUI upgradeUI;
+
+    public Image waveClearedPic;
 
     private void Start()
     {
@@ -36,18 +41,35 @@ public class SpawnManager : MonoBehaviour
                 for (int i = 0; i < wave.totalSpawnEnemies; i++)
                 {
                     int enemyIndex = Random.Range(0, wave.numberOfRandomSpawnPoint);
-                    GameObject enemy = Instantiate(enemyPrefab, spawnPoints[enemyIndex].position, enemyPrefab.transform.rotation);
-                    activeEnemies.Add(enemy);
+                    GameObject enemyObj = Instantiate(enemyPrefab, spawnPoints[enemyIndex].position, enemyPrefab.transform.rotation);
+
+                    Enemy enemy = enemyObj.GetComponent<Enemy>();
+                    if (enemy != null)
+                    {
+                        enemy.health = Mathf.RoundToInt(enemy.health * wave.healthBoost);
+                        enemy.speed *= wave.speedBoost;
+                        enemy.damage = Mathf.RoundToInt(enemy.damage * wave.damageBoost);
+                    }
+
+                    activeEnemies.Add(enemyObj);
                     yield return new WaitForSeconds(wave.spawnInterval);
                 }
             }
 
             yield return new WaitUntil(() => activeEnemies.Count == 0);
 
-            Debug.Log("Next Wave");
+            waveClearedPic.gameObject.SetActive(true);
+            yield return new WaitForSeconds(3f);
+
+            waveClearedPic.gameObject.SetActive(false);
+            upgradeUI.ShowUpgrades();
+
+            yield return new WaitUntil(() => !upgradeUI.upgradePanel.activeSelf);
+
+            Debug.Log("Next Wave Starting...");
             currentWave++;
         }
-        Debug.Log("Finished !!");
+        Debug.Log("All Waves Completed!!");
     }
 
     public void RemoveEnemy(GameObject enemy)

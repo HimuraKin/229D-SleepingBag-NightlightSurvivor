@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float baseMoveSpeed = 5f;
+    public float moveSpeed;
     public float sprintMultiplier = 1.5f;
     public float jumpForce = 5f;
     public Transform orientation;
@@ -17,7 +18,12 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        ResetStats();
+    }
+
+    public void ResetStats()
+    {
+        moveSpeed = baseMoveSpeed;
     }
 
     void Update()

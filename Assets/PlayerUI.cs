@@ -5,20 +5,19 @@ using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
 {
-    public TextMeshProUGUI dmgText;
+    public TextMeshProUGUI dmgText, speedText, asText, currentWaveText;
+    
     public LightBall lightBall;
-
-    public TextMeshProUGUI speedText;
     public PlayerMovement playerMovement;
-
-    public TextMeshProUGUI asText;
     public ShootSystem shootSystem;
+    public SpawnManager spawnManager;
 
     private void Update()
     {
         UpdateDMGUI();
         UpdateSpeedUI();
         UpdateAttackSpeedUI();
+        UpdateWaveUI();
     }
 
     public void UpdateDMGUI()
@@ -33,5 +32,9 @@ public class PlayerUI : MonoBehaviour
     public void UpdateAttackSpeedUI()
     {
         asText.text = $"{shootSystem.fireRate}";
+    }
+    public void UpdateWaveUI()
+    {
+        currentWaveText.text = $"Wave : {spawnManager.currentWave + 1}";
     }
 }

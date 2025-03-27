@@ -22,13 +22,23 @@ public class Enemy : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
-        else
+
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player not found!");
+            HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+            }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -38,7 +48,7 @@ public class Enemy : MonoBehaviour
                 playerHealth.TakeDamage(damage);
             }
         }
-    }
+    }*/
 
     private void OnDestroy()
     {
