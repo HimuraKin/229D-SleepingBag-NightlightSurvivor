@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
                 for (int i = 0; i < wave.totalSpawnEnemies; i++)
                 {
                     int enemyIndex = Random.Range(0, wave.numberOfRandomSpawnPoint);
-                    GameObject enemy = Instantiate(enemyPrefab, spawnPoints[enemyIndex].position, Quaternion.identity);
+                    GameObject enemy = Instantiate(enemyPrefab, spawnPoints[enemyIndex].position, enemyPrefab.transform.rotation);
                     activeEnemies.Add(enemy);
                     yield return new WaitForSeconds(wave.spawnInterval);
                 }

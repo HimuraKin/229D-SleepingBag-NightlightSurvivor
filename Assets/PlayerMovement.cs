@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private bool isGrounded;
 
+    public Animation anim;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -34,6 +36,15 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 movement = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
         rb.velocity = movement;
+
+        if (moveDirection.magnitude > 0.1f)
+        {
+            anim.Play("Run");
+        }
+        else
+        {
+            anim.Play("Idle");
+        }
     }
 
     void Jump()

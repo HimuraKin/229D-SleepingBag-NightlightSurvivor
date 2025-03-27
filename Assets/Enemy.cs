@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +6,14 @@ public class Enemy : MonoBehaviour
 {
     public int health = 30;
     public float speed = 3f;
+    public int damage = 10;
     private Rigidbody rb;
     private Transform player;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
@@ -23,7 +24,19 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.Log("not find");
+            Debug.Log("Player not found!");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            HealthSystem playerHealth = other.gameObject.GetComponent<HealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+            }
         }
     }
 
@@ -39,7 +52,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health < 0)
+        if (health <= 0)
         {
             Die();
         }

@@ -5,12 +5,14 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     public int health = 100;
-    public float speed = 2f;
+    public float speed = 3f;
+    public int damage = 20;
+    private Rigidbody rb;
     private Transform player;
-
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     void Update()
@@ -19,20 +21,22 @@ public class Boss : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        if (health < 0)
+        else
         {
-            Die();
+            Debug.Log("Player not found!");
         }
     }
 
-    void Die()
+    private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            HealthSystem playerHealth = other.gameObject.GetComponent<HealthSystem>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+            }
+        }
     }
 
     private void OnDestroy()
@@ -42,5 +46,19 @@ public class Boss : MonoBehaviour
         {
             spawnManager.RemoveEnemy(gameObject);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
