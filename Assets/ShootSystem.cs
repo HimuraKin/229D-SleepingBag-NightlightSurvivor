@@ -14,6 +14,9 @@ public class ShootSystem : MonoBehaviour
     private float nextFireTime = 0f;
     public GameObject upgradePanel;
 
+    public AudioSource AudioSource;
+    public AudioClip shootVfx;
+
     void Start()
     {
         ResetStats();
@@ -38,6 +41,7 @@ public class ShootSystem : MonoBehaviour
             GameObject ball = Instantiate(lightBallPrefab, shootPoint.position, shootPoint.rotation);
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             float shootForce = mass * acceleration;
+            AudioSource.PlayOneShot(shootVfx);
 
             if (rb != null)
             {

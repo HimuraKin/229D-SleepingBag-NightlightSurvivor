@@ -26,9 +26,9 @@ public class UpgradeUI : MonoBehaviour
     void InitializeUpgrades()
     {
         allUpgrades.Add(new UpgradeOption("IncreaseAttack", () => lightBall.damage += 10));
-        allUpgrades.Add(new UpgradeOption("IncreaseHealth", () => { healthSystem.maxHealth += 10; healthSystem.Heal(10); }));
-        allUpgrades.Add(new UpgradeOption("IncreaseSpeed", () => player.moveSpeed += 1f));
-        allUpgrades.Add(new UpgradeOption("IncreaseAttackSpeed", () => shootSystem.fireRate -= 0.1f));
+        allUpgrades.Add(new UpgradeOption("IncreaseHealth", () => { healthSystem.maxHealth += 20; healthSystem.Heal(20); }));
+        allUpgrades.Add(new UpgradeOption("IncreaseSpeed", () => player.moveSpeed += 2f));
+        allUpgrades.Add(new UpgradeOption("IncreaseAttackSpeed", () => shootSystem.fireRate -= 0.15f));
     }
 
     public void ShowUpgrades()

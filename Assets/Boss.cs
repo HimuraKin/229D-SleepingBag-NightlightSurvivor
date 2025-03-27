@@ -1,18 +1,22 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    public int health = 100;
-    public float speed = 3f;
-    public int damage = 20;
-    private Rigidbody rb;
+    public int maxHealth = 300;
+    public int health;
+    public float speed = 6f;
+    public int damage = 10;
     private Transform player;
+    public AudioSource audioSource;
+    public AudioClip deadsfx;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        health = maxHealth; // กำหนดค่า Health เริ่มต้น
     }
 
     void Update()
@@ -21,44 +25,21 @@ public class Boss : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
-        else
-        {
-            Debug.Log("Player not found!");
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            HealthSystem playerHealth = other.gameObject.GetComponent<HealthSystem>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage);
-            }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        SpawnManager spawnManager = FindObjectOfType<SpawnManager>();
-        if (spawnManager != null)
-        {
-            spawnManager.RemoveEnemy(gameObject);
-        }
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+
         if (health <= 0)
         {
+            audioSource.PlayOneShot(deadsfx);
             Die();
         }
     }
 
-    void Die()
+    public void Die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.5f);
     }
 }

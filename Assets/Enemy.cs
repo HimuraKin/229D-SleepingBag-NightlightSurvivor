@@ -9,9 +9,13 @@ public class Enemy : MonoBehaviour
     public int damage = 10;
     private Rigidbody rb;
     private Transform player;
+    public AudioSource audioSource;
+    public AudioClip deadsfx;
+
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
@@ -37,18 +41,17 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-    /*private void OnTriggerEnter(Collider other)
+    private void OnCollisionExit(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            HealthSystem playerHealth = other.gameObject.GetComponent<HealthSystem>();
+            HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
             }
         }
-    }*/
+    }
 
     private void OnDestroy()
     {
@@ -64,12 +67,13 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            audioSource.PlayOneShot(deadsfx);
             Die();
         }
     }
 
-    void Die()
+    public void Die()
     {
-        Destroy(gameObject);
+        Destroy(gameObject,0.5f);
     }
 }

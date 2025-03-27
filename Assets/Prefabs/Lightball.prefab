@@ -243,4 +243,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 10
   lifeTime: 5
-  damage: 30
+  damage: 100
