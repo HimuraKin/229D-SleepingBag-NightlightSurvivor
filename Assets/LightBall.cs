@@ -14,7 +14,6 @@ public class LightBall : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Bullet hit: {other.name}");
         if (other.gameObject.CompareTag("Enemy"))
         {
             Enemy enemy = other.gameObject.GetComponent<Enemy>();

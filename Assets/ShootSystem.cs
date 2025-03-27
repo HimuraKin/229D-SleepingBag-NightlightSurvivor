@@ -6,7 +6,8 @@ public class ShootSystem : MonoBehaviour
 {
     public GameObject lightBallPrefab;
     public Transform shootPoint;
-    public float shootForce = 100f;
+    public float mass = 2f;
+    public float acceleration = 50f;
     public float fireRate = 0.5f;
 
     private float nextFireTime = 0f;
@@ -24,6 +25,7 @@ public class ShootSystem : MonoBehaviour
 
             GameObject ball = Instantiate(lightBallPrefab, shootPoint.position, shootPoint.rotation);
             Rigidbody rb = ball.GetComponent<Rigidbody>();
+            float shootForce = mass * acceleration;
 
             if (rb != null)
             {

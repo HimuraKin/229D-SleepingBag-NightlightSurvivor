@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeSystem : MonoBehaviour
 {
     public PlayerMovement player;
-    public ShootSystem shootSystem;
+    public LightBall LightBall;
     public HealthSystem healthSystem;
 
     public void IncreaseSpeed()
@@ -13,9 +13,9 @@ public class UpgradeSystem : MonoBehaviour
         player.moveSpeed += 1f;
     }
 
-    public void IncreaseFireRate()
+    public void IncreaseAttackDamage()
     {
-        shootSystem.fireRate -= 0.1f;
+        LightBall.damage += 10;
     }
 
     public void IncreaseHealth()
