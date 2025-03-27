@@ -98,12 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66246a37bf406664eb9a323f0e330cc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
-  health: 1000
+  maxHealth: 500
+  health: 500
   speed: 6
   damage: 10
   audioSource: {fileID: 1670291551448133900}
   deadsfx: {fileID: 8300000, guid: 0e84038961d6c4b72af49c11e1553b9e, type: 3}
+  attackCooldown: 2
 --- !u!82 &1670291551448133900
 AudioSource:
   m_ObjectHideFlags: 0
