@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip deadsfx;
 
+    public float attackCooldown = 2f;
+    private float lastAttackTime;
 
     void Start()
     {
@@ -26,29 +28,20 @@ public class Enemy : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
-
     }
 
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
-            if (playerHealth != null)
+            if (Time.time >= lastAttackTime + attackCooldown)
             {
-                playerHealth.TakeDamage(damage);
-            }
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage);
+                HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage);
+                    lastAttackTime = Time.time;
+                }
             }
         }
     }
@@ -74,6 +67,6 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        Destroy(gameObject,0.5f);
+        Destroy(gameObject, 0.5f);
     }
 }

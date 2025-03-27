@@ -17,6 +17,8 @@ public class ShootSystem : MonoBehaviour
     public AudioSource AudioSource;
     public AudioClip shootVfx;
 
+    private bool isPaused = false;
+
     void Start()
     {
         ResetStats();
@@ -29,7 +31,10 @@ public class ShootSystem : MonoBehaviour
 
     void Update()
     {
-        ShootLightBall();
+        if (!isPaused)
+        {
+            ShootLightBall();
+        }
     }
 
     void ShootLightBall()
@@ -48,5 +53,9 @@ public class ShootSystem : MonoBehaviour
                 rb.AddForce(shootPoint.forward * shootForce, ForceMode.Impulse);
             }
         }
+    }
+    public void SetPause(bool pause)
+    {
+        isPaused = pause;
     }
 }

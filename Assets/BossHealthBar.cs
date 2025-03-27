@@ -28,11 +28,7 @@ public class BossHealthBar : MonoBehaviour
                 healthSlider.value = boss.health;
             }
         }
-        else if (bossFound)
-        {
-            healthSlider.gameObject.SetActive(false);
-        }
-
+        
         if (bossFound && boss != null)
         {
             healthSlider.value = boss.health;

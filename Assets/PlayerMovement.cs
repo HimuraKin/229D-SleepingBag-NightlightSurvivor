@@ -6,8 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float baseMoveSpeed = 5f;
     public float moveSpeed;
-    public float sprintMultiplier = 1.5f;
-    public float jumpForce = 5f;
+    public float mass = 1;
+    public float jumpForce;
     public Transform orientation;
 
     private Rigidbody rb;
@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer()
     {
-        float speed = moveSpeed * (Input.GetKey(KeyCode.LeftShift) ? sprintMultiplier : 1f);
+        float speed = moveSpeed;
         Vector3 moveDirection = orientation.forward * Input.GetAxis("Vertical") + orientation.right * Input.GetAxis("Horizontal");
 
         Vector3 movement = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
+        jumpForce = mass * moveSpeed;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false;
     }
