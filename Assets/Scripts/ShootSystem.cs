@@ -13,6 +13,7 @@ public class ShootSystem : MonoBehaviour
 
     private float nextFireTime = 0f;
     public GameObject upgradePanel;
+    public GameObject playDied;
 
     public AudioSource AudioSource;
     public AudioClip shootVfx;
@@ -39,7 +40,7 @@ public class ShootSystem : MonoBehaviour
 
     void ShootLightBall()
     {
-        if ( (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime) && !upgradePanel.activeSelf)
+        if ( (Input.GetButtonDown("Fire1") && Time.time >= nextFireTime) && !upgradePanel.activeSelf && !playDied.activeSelf)
         {
             nextFireTime = Time.time + fireRate;
 

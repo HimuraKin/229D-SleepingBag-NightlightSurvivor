@@ -14,6 +14,7 @@ public class PlayerUI : MonoBehaviour
     public PlayerMovement playerMovement;
     public ShootSystem shootSystem;
     public SpawnManager spawnManager;
+    public HealthSystem healthSystem;
 
     private void Update()
     {

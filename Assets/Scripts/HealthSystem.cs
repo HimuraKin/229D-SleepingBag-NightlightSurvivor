@@ -8,7 +8,7 @@ public class HealthSystem : MonoBehaviour
 {
     public int baseMaxHealth = 100;
     public int maxHealth;
-    private int currentHealth;
+    public int currentHealth;
     public int healAmount = 20;
     public float healCD = 30;
 
@@ -89,7 +89,13 @@ public class HealthSystem : MonoBehaviour
 
     void Die()
     {
-        Destroy(gameObject);
+        PlayerDied playerDied = FindObjectOfType<PlayerDied>();
+
+        if (playerDied != null)
+        {
+            playerDied.deadPanel.SetActive(true);
+        }
+        Destroy(this);
     }
 
 }

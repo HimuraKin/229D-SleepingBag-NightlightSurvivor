@@ -62,11 +62,7 @@ public class Boss : MonoBehaviour
     {
         audioSource.PlayOneShot(deadsfx);
         Destroy(gameObject, 0.5f);
-        Invoke("LoadNextScene", 1f);
-    }
-
-    void LoadNextScene()
-    {
         SceneManager.LoadScene(2);
     }
 }
+
