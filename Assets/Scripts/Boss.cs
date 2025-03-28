@@ -23,11 +23,11 @@ public class Boss : MonoBehaviour
         health = maxHealth;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (player != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.fixedDeltaTime);
         }
     }
 
@@ -60,7 +60,13 @@ public class Boss : MonoBehaviour
 
     public void Die()
     {
+        audioSource.PlayOneShot(deadsfx);
         Destroy(gameObject, 0.5f);
+        Invoke("LoadNextScene", 1f);
+    }
+
+    void LoadNextScene()
+    {
         SceneManager.LoadScene(2);
     }
 }

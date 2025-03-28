@@ -8,31 +8,31 @@ public class BossHealthBar : MonoBehaviour
 {
     public Slider healthSlider;
     private Boss boss;
-    private bool bossFound = false;
 
     void Start()
     {
         healthSlider.gameObject.SetActive(false);
+        StartCoroutine(FindBossAndInitialize());
+    }
+
+    IEnumerator FindBossAndInitialize()
+    {
+        while (boss == null)
+        {
+            boss = FindObjectOfType<Boss>();
+            yield return null;
+        }
+
+        healthSlider.gameObject.SetActive(true);
+        healthSlider.maxValue = boss.maxHealth;
+        healthSlider.value = boss.health;
     }
 
     void Update()
     {
-        if (!bossFound)
-        {
-            boss = FindObjectOfType<Boss>();
-            if (boss != null)
-            {
-                healthSlider.gameObject.SetActive(true);
-                bossFound = true;
-                healthSlider.maxValue = boss.maxHealth;
-                healthSlider.value = boss.health;
-            }
-        }
-        
-        if (bossFound && boss != null)
+        if (boss != null)
         {
             healthSlider.value = boss.health;
         }
-
     }
 }

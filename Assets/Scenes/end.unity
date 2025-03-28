@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creditText: {fileID: 2052474401}
   scrollSpeed: 50
-  endPositionY: 2000
+  endPositionY: 2200
 --- !u!114 &2052474403
 MonoBehaviour:
   m_ObjectHideFlags: 0
