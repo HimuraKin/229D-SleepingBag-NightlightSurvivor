@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 public class GameAnalyticsManager : MonoBehaviour
 {
     public static GameAnalyticsManager instance;
-    private float sessionStartTime;
 
-    async void Awake()
+    private float sessionStartTime;
+    private bool isInitialized = false;
+
+    private async void Awake()
     {
         if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            await ServicesInitialize();
+
+            await InitializeServices();
         }
         else
         {
@@ -22,14 +25,53 @@ public class GameAnalyticsManager : MonoBehaviour
         }
     }
 
-    private async Task ServicesInitialize()
+    private async Task InitializeServices()
     {
-        await UnityServices.InitializeAsync();
-        AnalyticsService.Instance.StartDataCollection();
+        try
+        {
+            await UnityServices.InitializeAsync();
+            AnalyticsService.Instance.StartDataCollection();
+
+            isInitialized = true;
+
+            Debug.Log("Analytics Initialized");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Analytics initialization failed: " + e.Message);
+        }
+    }
+
+    public void RecordGameStart()
+    {
+        if (!isInitialized) return;
+
+        sessionStartTime = Time.time;
+
+        CustomEvent startEvent = new CustomEvent("Game_Start");
+        AnalyticsService.Instance.RecordEvent(startEvent);
+    }
+
+    public void RecordGameEnd(int waveReached, bool isWin)
+    {
+        if (!isInitialized) return;
+
+        float sessionDuration = Time.time - sessionStartTime;
+
+        CustomEvent gameEnd = new CustomEvent("Game_End")
+        {
+            {"SessionDuration", sessionDuration},
+            {"WaveReached", waveReached + 1},
+            {"IsWin", isWin}
+        };
+
+        AnalyticsService.Instance.RecordEvent(gameEnd);
     }
 
     public void RecordPlayerDeath(int wave, int enemiesKilled)
     {
+        if (!isInitialized) return;
+
         CustomEvent playerDeath = new CustomEvent("Player_Death")
         {
             {"Wave", wave + 1},
@@ -41,6 +83,8 @@ public class GameAnalyticsManager : MonoBehaviour
 
     public void RecordUpgrade(string upgradeName, int wave)
     {
+        if (!isInitialized) return;
+
         CustomEvent upgradeEvent = new CustomEvent("Upgrade_Selected")
         {
             {"UpgradeName", upgradeName},
@@ -50,9 +94,10 @@ public class GameAnalyticsManager : MonoBehaviour
         AnalyticsService.Instance.RecordEvent(upgradeEvent);
     }
 
-    // 3 Enemy Kill
     public void RecordEnemyKilled(string enemyType, int wave)
     {
+        if (!isInitialized) return;
+
         CustomEvent killEvent = new CustomEvent("Enemy_Killed")
         {
             {"EnemyType", enemyType},
@@ -60,28 +105,5 @@ public class GameAnalyticsManager : MonoBehaviour
         };
 
         AnalyticsService.Instance.RecordEvent(killEvent);
-    }
-
-    public void RecordGameStart()
-    {
-        sessionStartTime = Time.time;
-
-        CustomEvent startEvent = new CustomEvent("Game_Start");
-
-        AnalyticsService.Instance.RecordEvent(startEvent);
-    }
-
-    public void RecordGameEnd(int waveReached, bool isWin)
-    {
-        float sessionDuration = Time.time - sessionStartTime;
-
-        CustomEvent gameEnd = new CustomEvent("Game_End")
-    {
-        {"SessionDuration", sessionDuration},
-        {"WaveReached", waveReached + 1},
-        {"IsWin", isWin}
-    };
-
-        AnalyticsService.Instance.RecordEvent(gameEnd);
     }
 }

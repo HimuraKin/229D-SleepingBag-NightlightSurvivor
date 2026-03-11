@@ -23,10 +23,17 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        preloadedBoss = Instantiate(bossPrefab);
-        preloadedBoss.SetActive(false);
+        if (bossPrefab != null)
+        {
+            preloadedBoss = Instantiate(bossPrefab);
+            preloadedBoss.SetActive(false);
+        }
 
-        GameAnalyticsManager.instance.RecordGameStart();
+        if (GameAnalyticsManager.instance != null)
+        {
+            GameAnalyticsManager.instance.RecordGameStart();
+        }
+
         enemiesKilled = 0;
 
         StartCoroutine(SpawnRoutine());
@@ -56,7 +63,7 @@ public class SpawnManager : MonoBehaviour
             {
                 for (int i = 0; i < wave.totalSpawnEnemies; i++)
                 {
-                    int enemyIndex = Random.Range(0, wave.numberOfRandomSpawnPoint);
+                    int enemyIndex = Random.Range(0, Mathf.Min(wave.numberOfRandomSpawnPoint, spawnPoints.Length));
 
                     GameObject enemyObj = Instantiate(
                         enemyPrefab,
@@ -100,7 +107,10 @@ public class SpawnManager : MonoBehaviour
 
         Debug.Log("Game Completed!");
         upgradeUI.upgradePanel.SetActive(false);
-        GameAnalyticsManager.instance.RecordGameEnd(currentWave, true);
+        if (GameAnalyticsManager.instance != null)
+        {
+            GameAnalyticsManager.instance.RecordGameEnd(currentWave, true);
+        }
 
         yield return new WaitForSeconds(2f);
 
