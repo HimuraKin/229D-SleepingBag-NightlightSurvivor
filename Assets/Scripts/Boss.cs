@@ -27,7 +27,13 @@ public class Boss : MonoBehaviour
     {
         if (player != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.fixedDeltaTime);
+            Vector3 direction = player.position - transform.position;
+            direction.y = 0;
+
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
+
+            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
     }
 
@@ -61,8 +67,16 @@ public class Boss : MonoBehaviour
     public void Die()
     {
         audioSource.PlayOneShot(deadsfx);
+
+        SpawnManager spawner = FindAnyObjectByType<SpawnManager>();
+
+        if (spawner != null)
+        {
+            spawner.RemoveEnemy(gameObject);
+            GameAnalyticsManager.instance.RecordEnemyKilled("Boss", spawner.currentWave);
+        }
+
         Destroy(gameObject, 0.5f);
-        SceneManager.LoadScene(2);
     }
 }
 

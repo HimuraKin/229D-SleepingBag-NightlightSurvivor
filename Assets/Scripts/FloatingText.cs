@@ -20,6 +20,10 @@ public class FloatingText : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape))
         {
+            Time.timeScale = 1f;
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             SceneManager.LoadScene(0);
         }
     }

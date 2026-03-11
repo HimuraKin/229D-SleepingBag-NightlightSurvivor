@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 4ee39bc25eeaa144891bd0eadcc1bc51
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -241,8 +241,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -283,6 +281,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
@@ -302,27 +303,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 8e7a6da35dedf9a44b55ccf835b8cdba
-  - f11b65e5c9928f343a127b5d2107459f
-  - 4eb816884eb99f54b98aa9811832f036
-  - c6d9aa70eb953b746a0ad70564b5d62d
-  - fb85618a31bf1b84b9a1a26cd47bf172
-  - 69f274ffb7a77c04d8958d309e29d21e
-  - 2e899fabcb02c3b4aa4caff291f69092
-  - 4001a5cc581e0a2428b97d8f029bb076
-  - 29e0d112ab2ece44d908e331e9a3e8d7
-  - e4c66c426ddfad24d8f8c3afac37e47e
-  - c96ba2ee7fce5994080452263ddb815f
-  - 15dfe665a61f49e49b66ab8a380f11df
-  - cf595d371dd0ad146b233270ee8cb7e1
-  - ea5b8653d9c92304c85623d2fe5fd4cc
-  - 6b634a17b04c012429d1a552f40bfdac
-  - 0557a903763478043bef04f351bd4999
-  - 798b6c2c00818254285b6d71ea41cbe4
-  - 5cad930728f9f08499e6abb421c2215d
-  - f7c06489f2a13f34281a6f1eb7c714fa
-  - 32a38bd89e1d4804f8fddd2188c41b18
+  referencedClips: []
   importAnimation: 0
   humanDescription:
     serializedVersion: 3

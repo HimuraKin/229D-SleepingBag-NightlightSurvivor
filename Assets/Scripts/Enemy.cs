@@ -26,6 +26,12 @@ public class Enemy : MonoBehaviour
     {
         if (player != null)
         {
+            Vector3 direction = player.position - transform.position;
+            direction.y = 0;
+
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
+
             transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
         }
     }
@@ -48,7 +54,8 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        SpawnManager spawnManager = FindObjectOfType<SpawnManager>();
+        SpawnManager spawnManager = FindAnyObjectByType<SpawnManager>();
+
         if (spawnManager != null)
         {
             spawnManager.RemoveEnemy(gameObject);
@@ -67,6 +74,16 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        SpawnManager spawnManager = FindAnyObjectByType<SpawnManager>();
+
+        if (GameAnalyticsManager.instance != null)
+        {
+            GameAnalyticsManager.instance.RecordEnemyKilled(
+                gameObject.name,
+                spawnManager.currentWave
+            );
+        }
+
         Destroy(gameObject, 0.5f);
     }
 }

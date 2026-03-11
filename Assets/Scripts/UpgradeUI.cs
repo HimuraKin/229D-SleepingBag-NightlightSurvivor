@@ -17,6 +17,8 @@ public class UpgradeUI : MonoBehaviour
     public HealthSystem healthSystem;
     public ShootSystem shootSystem;
 
+    public SpawnManager spawnManager;
+
     private void Start()
     {
         InitializeUpgrades();
@@ -28,7 +30,7 @@ public class UpgradeUI : MonoBehaviour
         allUpgrades.Add(new UpgradeOption("IncreaseAttack", () => lightBall.damage += 10));
         allUpgrades.Add(new UpgradeOption("IncreaseHealth", () => { healthSystem.maxHealth += 20; healthSystem.Heal(20); }));
         allUpgrades.Add(new UpgradeOption("IncreaseSpeed", () => player.moveSpeed += 2f));
-        allUpgrades.Add(new UpgradeOption("IncreaseAttackSpeed", () => shootSystem.fireRate -= 0.15f));
+        allUpgrades.Add(new UpgradeOption("IncreaseAttackSpeed", () => shootSystem.fireRate = Mathf.Round((shootSystem.fireRate - 0.15f) * 100f) / 100f));
     }
 
     public void ShowUpgrades()
@@ -65,6 +67,15 @@ public class UpgradeUI : MonoBehaviour
     public void SelectUpgrade(int index)
     {
         currentOptions[index].ApplyUpgrade();
+
+        if (GameAnalyticsManager.instance != null)
+        {
+            GameAnalyticsManager.instance.RecordUpgrade(
+                currentOptions[index].name,
+                spawnManager.currentWave
+            );
+        }
+
         upgradePanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

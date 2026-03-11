@@ -20,6 +20,8 @@ public class HealthSystem : MonoBehaviour
 
     public TextMeshProUGUI healText;
 
+    private bool isDead = false;
+
     void Start()
     {
         ResetStats();
@@ -66,12 +68,16 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
+
         UpdateHealthUI();
 
         if (currentHealth <= 0)
         {
+            isDead = true;
             Die();
         }
     }
@@ -89,13 +95,21 @@ public class HealthSystem : MonoBehaviour
 
     void Die()
     {
-        PlayerDied playerDied = FindObjectOfType<PlayerDied>();
+        PlayerDied playerDied = FindAnyObjectByType<PlayerDied>();
+        SpawnManager spawnManager = FindFirstObjectByType<SpawnManager>();
 
         if (playerDied != null)
         {
-            playerDied.deadPanel.SetActive(true);
+            playerDied.OnPlayerDied();
         }
-        Destroy(this);
+        if (spawnManager != null)
+        {
+            GameAnalyticsManager.instance.RecordGameEnd(spawnManager.currentWave, false);
+
+            GameAnalyticsManager.instance.RecordPlayerDeath(
+        spawnManager.currentWave,
+        spawnManager.enemiesKilled);
+        }
     }
 
 }

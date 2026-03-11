@@ -1,40 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerDied : MonoBehaviour
 {
     public GameObject deadPanel;
-    public HealthSystem healthSystem;
 
-    private void Update()
+    private void Start()
     {
-        if (healthSystem.currentHealth <= 0)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            deadPanel.SetActive(true);
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            deadPanel.SetActive(false);
-        }
+        deadPanel.SetActive(false);
+    }
+
+    public void OnPlayerDied()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        deadPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void PlayAgain()
     {
         deadPanel.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
         Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void BackToMain()
     {
         deadPanel.SetActive(false);
-        SceneManager.LoadScene(0);
-        Time.timeScale = 1;
-    }
+        Time.timeScale = 1f;
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene(0);
+    }
 }

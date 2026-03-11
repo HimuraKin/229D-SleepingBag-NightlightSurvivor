@@ -12,6 +12,15 @@ public class Mainmenu : MonoBehaviour
     public GameObject fiveWave;
     public GameObject back;
     public GameObject playMode;
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Time.timeScale = 1f;
+    }
+
     public void ShowFiveWave()
     {
         fiveWave.SetActive(true);
